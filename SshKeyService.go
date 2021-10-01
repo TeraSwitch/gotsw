@@ -8,7 +8,7 @@ import (
 const sshKeyBasePath = "v1/sshkey"
 
 type SshKeyService interface {
-	List(ctx context.Context) ([]Region, error)
+	List(ctx context.Context) ([]SshKey, error)
 	Create(ctx context.Context, sshKeyReq *SshKeyCreateRequest) (*SshKey, error)
 }
 

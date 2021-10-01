@@ -9,9 +9,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
+	"github.com/google/go-querystring/query"
 	"golang.org/x/oauth2"
 )
 
@@ -36,6 +38,8 @@ type Client struct {
 
 	ImageService  ImageService
 	RegionService RegionService
+	SshKeyService SshKeyService
+	MetalService  MetalService
 
 	// Optional function called after every successful request made to API
 	onRequestCompleted RequestCompletionCallback
@@ -74,6 +78,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
 	c.ImageService = &ImagesServiceHandler{client: c}
 	c.RegionService = &RegionsServiceHandler{client: c}
+	c.SshKeyService = &SshKeyServiceHandler{client: c}
+	c.MetalService = &MetalServiceHandler{client: c}
 
 	c.headers = make(map[string]string)
 	return c
@@ -258,4 +264,31 @@ func StreamToString(stream io.Reader) string {
 	buf := new(bytes.Buffer)
 	_, _ = buf.ReadFrom(stream)
 	return buf.String()
+}
+
+func addOptions(s string, opt interface{}) (string, error) {
+	v := reflect.ValueOf(opt)
+
+	if v.Kind() == reflect.Ptr && v.IsNil() {
+		return s, nil
+	}
+
+	origURL, err := url.Parse(s)
+	if err != nil {
+		return s, err
+	}
+
+	origValues := origURL.Query()
+
+	newValues, err := query.Values(opt)
+	if err != nil {
+		return s, err
+	}
+
+	for k, v := range newValues {
+		origValues[k] = v
+	}
+
+	origURL.RawQuery = origValues.Encode()
+	return origURL.String(), nil
 }
