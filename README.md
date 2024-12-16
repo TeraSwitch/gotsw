@@ -1,26 +1,31 @@
 # GoTSW
 
-The official Teraswitch Go client.  
+The official Teraswitch Go client.
 
 ## Install
+
 ```sh
-go get -u github.com/teraswitch/gotsw
+go get github.com/teraswitch/gotsw/v2
 ```
 
 ## Usage
+
 ```go
-import "github.com/teraswitch/gotsw"
+import "github.com/teraswitch/gotsw/v2"
 ```
 
 ### Authentication
+
 ```go
 package main
 
 import (
-    "github.com/teraswitch/gotsw"
+    "github.com/teraswitch/gotsw/v2"
 )
 
 func main() {
-    client := gotsw.NewFromToken("id:secret")
+    client := gotsw.New("id:secret")
 }
 ```
+
+For more examples, see the [examples](examples) directory.
