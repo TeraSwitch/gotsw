@@ -385,20 +385,30 @@ func (c *Client) GetMetalService(ctx context.Context, id int64) (*MetalResponse,
 	return resp, nil
 }
 
-// // ReinstallMetalService reinstalls a metal service by ID
-// func (c *Client) ReinstallMetalService(ctx context.Context, id int64, req *ReinstallMetalRequest) (*MetalServiceApiResponse, error) {
-// 	resp := &MetalServiceApiResponse{}
-// 	httpResp, err := c.Request(ctx, http.MethodPost, fmt.Sprintf("/Metal/%d/Reinstall", id), req)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer httpResp.Body.Close()
+type ReinstallMetalRequest struct {
+	DisplayName string      `json:"displayName,omitempty"`
+	ImageID     string      `json:"imageId,omitempty"`
+	IPXEUrl     string      `json:"ipxeUrl,omitempty"`
+	Partitions  []Partition `json:"partitions,omitempty"`
+	RaidArrays  []RaidArray `json:"raidArrays,omitempty"`
+	SSHKeyIDs   []int       `json:"sshKeyIds,omitempty"`
+	UserData    string      `json:"userData,omitempty"`
+}
 
-// 	if err := json.NewDecoder(httpResp.Body).Decode(resp); err != nil {
-// 		return nil, err
-// 	}
-// 	return resp, nil
-// }
+// ReinstallMetalService reinstalls a metal service by ID
+func (c *Client) ReinstallMetalService(ctx context.Context, id int64, req *ReinstallMetalRequest) (*MetalResponse, error) {
+	resp := &MetalResponse{}
+	httpResp, err := c.Request(ctx, http.MethodPost, fmt.Sprintf("Metal/%d/Reinstall", id), req)
+	if err != nil {
+		return nil, err
+	}
+	defer httpResp.Body.Close()
+
+	if err := json.NewDecoder(httpResp.Body).Decode(resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
 
 type PowerCommand string
 

@@ -66,6 +66,13 @@ type Client struct {
 	PlainLogger io.Writer
 }
 
+func (c *Client) SetClient(client *http.Client) *Client {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.HTTPClient = client
+	return c
+}
+
 // Logger returns the logger for the client.
 func (c *Client) Logger() *slog.Logger {
 	c.mu.RLock()
@@ -180,6 +187,7 @@ func (c *Client) Request(ctx context.Context, method, path string, body interfac
 	if err != nil {
 		return nil, fmt.Errorf("create request: %w", err)
 	}
+	req.Header.Set("User-Agent", "gotsw/v2")
 
 	tokenHeader := c.SessionTokenHeader
 	if tokenHeader == "" {
@@ -278,7 +286,6 @@ func WithQueryParam(key, value string) RequestOption {
 }
 
 // HeaderTransport is a http.RoundTripper that adds some headers to all requests.
-// @typescript-ignore HeaderTransport
 type HeaderTransport struct {
 	Transport http.RoundTripper
 	Header    http.Header
