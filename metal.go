@@ -393,6 +393,7 @@ type ReinstallMetalRequest struct {
 	RaidArrays  []RaidArray `json:"raidArrays,omitempty"`
 	SSHKeyIDs   []int       `json:"sshKeyIds,omitempty"`
 	UserData    string      `json:"userData,omitempty"`
+	TemplateID  int64       `json:"templateId,omitempty"`
 }
 
 // ReinstallMetalService reinstalls a metal service by ID
