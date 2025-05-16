@@ -386,13 +386,14 @@ func (c *Client) GetMetalService(ctx context.Context, id int64) (*MetalResponse,
 }
 
 type ReinstallMetalRequest struct {
-	DisplayName string      `json:"displayName,omitempty"`
-	ImageID     string      `json:"imageId,omitempty"`
-	IPXEUrl     string      `json:"ipxeUrl,omitempty"`
-	Partitions  []Partition `json:"partitions,omitempty"`
-	RaidArrays  []RaidArray `json:"raidArrays,omitempty"`
-	SSHKeyIDs   []int       `json:"sshKeyIds,omitempty"`
-	UserData    string      `json:"userData,omitempty"`
+	DisplayName     string           `json:"displayName,omitempty"`
+	ImageID         string           `json:"imageId,omitempty"`
+	SSHKeyIDs       []int64           `json:"sshKeyIds,omitempty"`
+	Password        string           `json:"password,omitempty"`
+	UserData        string           `json:"userData,omitempty"`
+	IPXEUrl         string           `json:"ipxeUrl,omitempty"`
+	Partitions      []Partition       `json:"partitions,omitempty"`
+	RaidArrays      []RaidArray       `json:"raidArrays,omitempty"`
 }
 
 // ReinstallMetalService reinstalls a metal service by ID
