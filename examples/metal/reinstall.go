@@ -23,16 +23,11 @@ func main() {
 	resp, err := client.ReinstallMetalService(ctx, 10346, &gotsw.ReinstallMetalRequest{
 		DisplayName: "test-metal-service",
 		ImageID:     "ubuntu-noble",
-		SSHKeyIDs:   []int{588},
+		SSHKeyIDs:   []int64{588},
+		UserData: "#cloud-config\n echo 'Hello, world!' > /etc/motd\n",
 		Partitions: []gotsw.Partition{
-			{
-				Name:   "nvme0n1-part1",
-				Device: "nvme0n1",
-			},
-			{
-				Name:   "nvme1n1-part1",
-				Device: "nvme1n1",
-			},
+			{Name: "nvme0n1-part1", Device: "nvme0n1"},
+			{Name: "nvme1n1-part1", Device: "nvme1n1"},
 		},
 		RaidArrays: []gotsw.RaidArray{
 			{
@@ -50,4 +45,30 @@ func main() {
 	}
 
 	spew.Dump(resp)
+
+	respWithPassword, err := client.ReinstallMetalService(ctx, 10346, &gotsw.ReinstallMetalRequest{
+		DisplayName: "test-metal-service",
+		ImageID:     "ubuntu-noble",
+		Password:    "MySecurePassword123!",
+		UserData: "#cloud-config\n echo 'Hello, world!' > /etc/motd\n",
+		Partitions: []gotsw.Partition{
+			{Name: "nvme0n1-part1", Device: "nvme0n1"},
+			{Name: "nvme1n1-part1", Device: "nvme1n1"},
+		},
+		RaidArrays: []gotsw.RaidArray{
+			{
+				Name:       "md0",
+				Type:       gotsw.RaidTypeRaid1,
+				Members:    []string{"nvme0n1-part1", "nvme1n1-part1"},
+				FileSystem: gotsw.FileSystemExt4,
+				MountPoint: "/",
+			},
+		},
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	spew.Dump(respWithPassword)
 }
