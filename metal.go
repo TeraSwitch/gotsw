@@ -28,6 +28,7 @@ type Metal struct {
 	TierID   string `json:"tierId"`
 	MemoryGB int32  `json:"memoryGb"`
 	ImageID  string `json:"imageId"`
+	StorageDevices map[string]MetalStorageDevice `json:"storageDevices"`
 
 	// Network configuration
 	IPAddresses []netip.Addr `json:"ipAddresses"`
