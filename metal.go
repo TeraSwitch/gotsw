@@ -26,9 +26,10 @@ type Metal struct {
 	PowerState PowerState `json:"powerState"`
 
 	// Hardware configuration
-	TierID   string `json:"tierId"`
-	MemoryGB int32  `json:"memoryGb"`
-	ImageID  string `json:"imageId"`
+	TierID         string                        `json:"tierId"`
+	Tier           MetalTier                     `json:"tier"`
+	MemoryGB       int32                         `json:"memoryGb"`
+	ImageID        string                        `json:"imageId"`
 	StorageDevices map[string]MetalStorageDevice `json:"storageDevices"`
 
 	// Network configuration
