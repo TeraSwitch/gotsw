@@ -26,9 +26,10 @@ type Metal struct {
 	PowerState PowerState `json:"powerState"`
 
 	// Hardware configuration
-	TierID   string `json:"tierId"`
-	MemoryGB int32  `json:"memoryGb"`
-	ImageID  string `json:"imageId"`
+	TierID         string                        `json:"tierId"`
+	Tier           CpuDetails                    `json:"tier"`
+	MemoryGB       int32                         `json:"memoryGb"`
+	ImageID        string                        `json:"imageId"`
 	StorageDevices map[string]MetalStorageDevice `json:"storageDevices"`
 
 	// Network configuration
@@ -281,6 +282,13 @@ type MetalTier struct {
 	TierType           MetalTierType                   `json:"tierType"`
 }
 
+// CpuDetails represents the CPU details for a metal tier
+type CpuDetails struct {
+	ID             string `json:"id"`             // ID of the CPU
+	CPU            string `json:"cpu"`            // The CPU model for the tier
+	CPUDescription string `json:"cpuDescription"` // Description of CPU (cores/threads)
+}
+
 // ServiceAvailability represents the availability of a service in a region
 type ServiceAvailability struct {
 	MaxQuantity int `json:"maxQuantity"`
@@ -397,14 +405,14 @@ func (c *Client) GetMetalService(ctx context.Context, id int64) (*MetalResponse,
 }
 
 type ReinstallMetalRequest struct {
-	DisplayName     string           `json:"displayName,omitempty"`
-	ImageID         string           `json:"imageId,omitempty"`
-	SSHKeyIDs       []int64           `json:"sshKeyIds,omitempty"`
-	Password        string           `json:"password,omitempty"`
-	UserData        string           `json:"userData,omitempty"`
-	IPXEUrl         string           `json:"ipxeUrl,omitempty"`
-	Partitions      []Partition       `json:"partitions,omitempty"`
-	RaidArrays      []RaidArray       `json:"raidArrays,omitempty"`
+	DisplayName string      `json:"displayName,omitempty"`
+	ImageID     string      `json:"imageId,omitempty"`
+	SSHKeyIDs   []int64     `json:"sshKeyIds,omitempty"`
+	Password    string      `json:"password,omitempty"`
+	UserData    string      `json:"userData,omitempty"`
+	IPXEUrl     string      `json:"ipxeUrl,omitempty"`
+	Partitions  []Partition `json:"partitions,omitempty"`
+	RaidArrays  []RaidArray `json:"raidArrays,omitempty"`
 }
 
 // ReinstallMetalService reinstalls a metal service by ID
