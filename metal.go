@@ -26,9 +26,14 @@ type Metal struct {
 	PowerState PowerState `json:"powerState"`
 
 	// Hardware configuration
-	TierID   string `json:"tierId"`
-	MemoryGB int32  `json:"memoryGb"`
-	ImageID  string `json:"imageId"`
+	TierID string `json:"tierId"`
+	Tier   struct {
+		ID             string `json:"id"`
+		CPU            string `json:"cpu"`
+		CPUDescription string `json:"cpuDescription"`
+	} `json:"tier"`
+	MemoryGB       int32                         `json:"memoryGb"`
+	ImageID        string                        `json:"imageId"`
 	StorageDevices map[string]MetalStorageDevice `json:"storageDevices"`
 
 	// Network configuration
@@ -397,14 +402,14 @@ func (c *Client) GetMetalService(ctx context.Context, id int64) (*MetalResponse,
 }
 
 type ReinstallMetalRequest struct {
-	DisplayName     string           `json:"displayName,omitempty"`
-	ImageID         string           `json:"imageId,omitempty"`
-	SSHKeyIDs       []int64           `json:"sshKeyIds,omitempty"`
-	Password        string           `json:"password,omitempty"`
-	UserData        string           `json:"userData,omitempty"`
-	IPXEUrl         string           `json:"ipxeUrl,omitempty"`
-	Partitions      []Partition       `json:"partitions,omitempty"`
-	RaidArrays      []RaidArray       `json:"raidArrays,omitempty"`
+	DisplayName string      `json:"displayName,omitempty"`
+	ImageID     string      `json:"imageId,omitempty"`
+	SSHKeyIDs   []int64     `json:"sshKeyIds,omitempty"`
+	Password    string      `json:"password,omitempty"`
+	UserData    string      `json:"userData,omitempty"`
+	IPXEUrl     string      `json:"ipxeUrl,omitempty"`
+	Partitions  []Partition `json:"partitions,omitempty"`
+	RaidArrays  []RaidArray `json:"raidArrays,omitempty"`
 }
 
 // ReinstallMetalService reinstalls a metal service by ID
