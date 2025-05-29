@@ -21,6 +21,7 @@ type Metal struct {
 
 	// Service-specific fields
 	RegionID   string     `json:"regionId"`
+	Region     Region     `json:"region"`
 	Status     Status     `json:"status"`
 	PowerState PowerState `json:"powerState"`
 
@@ -69,6 +70,15 @@ type ProvisioningEvent struct {
 	Body      string     `json:"body,omitempty"`
 	Timestamp time.Time  `json:"timestamp"`
 	State     EventState `json:"state"`
+}
+
+// Region represents a region
+type Region struct {
+	ID       *string `json:"id,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	Country  *string `json:"country,omitempty"`
+	City     *string `json:"city,omitempty"`
+	Location *string `json:"location,omitempty"`
 }
 
 // EventState represents the state of a provisioning event
