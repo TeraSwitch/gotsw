@@ -26,12 +26,8 @@ type Metal struct {
 	PowerState PowerState `json:"powerState"`
 
 	// Hardware configuration
-	TierID string `json:"tierId"`
-	Tier   struct {
-		ID             string `json:"id"`
-		CPU            string `json:"cpu"`
-		CPUDescription string `json:"cpuDescription"`
-	} `json:"tier"`
+	TierID         string                        `json:"tierId"`
+	Tier           CpuDetails                    `json:"tier"`
 	MemoryGB       int32                         `json:"memoryGb"`
 	ImageID        string                        `json:"imageId"`
 	StorageDevices map[string]MetalStorageDevice `json:"storageDevices"`
@@ -284,6 +280,13 @@ type MetalTier struct {
 	DriveSlotSetID     int                             `json:"driveSlotSetId"`
 	NetworkOptionSetID int                             `json:"networkOptionSetId"`
 	TierType           MetalTierType                   `json:"tierType"`
+}
+
+// CpuDetails represents the CPU details for a metal tier
+type CpuDetails struct {
+	ID             string `json:"id"`             // ID of the CPU
+	CPU            string `json:"cpu"`            // The CPU model for the tier
+	CPUDescription string `json:"cpuDescription"` // Description of CPU (cores/threads)
 }
 
 // ServiceAvailability represents the availability of a service in a region
