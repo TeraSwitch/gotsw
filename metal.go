@@ -413,6 +413,7 @@ type ReinstallMetalRequest struct {
 	IPXEUrl     string      `json:"ipxeUrl,omitempty"`
 	Partitions  []Partition `json:"partitions,omitempty"`
 	RaidArrays  []RaidArray `json:"raidArrays,omitempty"`
+	TemplateID  *int64      `json:"templateId,omitempty"`
 }
 
 // ReinstallMetalService reinstalls a metal service by ID
